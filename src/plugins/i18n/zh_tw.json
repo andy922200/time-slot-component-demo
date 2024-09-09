@@ -1,8 +1,19 @@
 {
-  "index": {
-    "title": "這是首頁"
-  },
-  "test": {
-    "title": "這是關於頁"
-  }
+  "selected-lang": "所選語言",
+  "selected-start-dateTime": "所選開始日期時間",
+  "selected-end-dateTime": "所選結束日期時間",
+  "date": "日期",
+  "start-time": "開始時間",
+  "end-time": "結束時間",
+  "next-day": "隔日",
+  "now": "現在",
+  "used-time-slots": "已用時間段",
+  "max-usage-hours": "最長時租",
+  "min-usage-hours": "最短時租",
+  "hours": "小時",
+  "minutes": "分鐘",
+  "other-fixed-rules": "其他固定規則",
+  "time-sector": "時間區間",
+  "generate-cross-day": "生成跨日",
+  "is-now-active": "啟用即刻預約?"
 }

@@ -4,10 +4,6 @@
 #app {
   min-height: 100vh;
   font-family: $font-family;
-  text-align: center;
-  color: #2c3e50;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 
   a {
     color: #2c3e50;
@@ -16,5 +12,30 @@
 
   .router-link-active {
     color: #42b983;
+  }
+
+  .outside__router{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .info-content{
+    width: 100%;
+
+    .info-content__links{
+      width: 100%;
+      justify-content: center;
+      display: flex;
+      align-items: center;
+      
+      a{
+        margin: 0 0.5rem;
+      }
+    }
+
+    p{
+      text-align: center;
+    }
   }
 }

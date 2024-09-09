@@ -1,27 +1,16 @@
-<script lang="ts">
+<script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { computed, defineComponent } from 'vue'
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 import useStore from '../store/index'
 
-export default defineComponent({
-  name: 'DevPage',
-  setup() {
-    const route = useRoute()
-    const path = computed(() => route.path)
-    const { main, demo } = useStore()
-    const { selectedLanguage } = storeToRefs(main)
-    const { user } = storeToRefs(demo)
-    const userEmail = user.value.email
-
-    return {
-      path,
-      selectedLanguage,
-      userEmail,
-    }
-  },
-})
+const route = useRoute()
+const path = computed(() => route.path)
+const { main, demo } = useStore()
+const { selectedLanguage } = storeToRefs(main)
+const { user } = storeToRefs(demo)
+const userEmail = user.value.email
 </script>
 
 <template>

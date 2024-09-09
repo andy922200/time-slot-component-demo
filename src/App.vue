@@ -1,52 +1,40 @@
-<script lang="ts">
-import { computed, defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRoute } from 'vue-router'
 
-import HelloWorld from './components/HelloWorld.vue'
 import { LayoutLanguages, Locales } from './plugins/i18n/config/locales'
 import { useMainStore } from './store/modules/main'
 
-export default defineComponent({
-  name: 'App',
-  components: {
-    HelloWorld,
+const mainStore = useMainStore()
+const { locale } = useI18n()
+const selectedLanguageModel = computed({
+  get() {
+    return mainStore.selectedLanguage
   },
-  setup() {
-    const route = useRoute()
-    const mainStore = useMainStore()
-    const { locale } = useI18n()
-    const routeName = computed(() => route.name?.valueOf().toString())
-
-    return {
-      selectedLanguageModel: computed({
-        get() {
-          return mainStore.selectedLanguage
-        },
-        set(value: Locales) {
-          locale.value = value
-          mainStore.setLanguage(value)
-        },
-      }),
-      LayoutLanguages,
-      routeName,
-    }
+  set(value: Locales) {
+    locale.value = value
+    mainStore.setLanguage(value)
   },
 })
 </script>
 
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <select v-model="selectedLanguageModel">
-    <option v-for="list in LayoutLanguages" :key="list.param" :value="list.param">
-      {{ list.title }}
-    </option>
-  </select>
-  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
-  <router-link :to="{ name: 'index' }">To Home</router-link>
-  <br />
-  <router-link :to="{ name: 'test' }">To Test</router-link>
-  <p v-if="routeName">{{ $t(`${routeName}.title`) }}</p>
+  <div class="outside__router">
+    <img alt="Vue logo" src="./assets/logo.png" />
+    <select v-model="selectedLanguageModel">
+      <option v-for="list in LayoutLanguages" :key="list.param" :value="list.param">
+        {{ list.title }}
+      </option>
+    </select>
+  </div>
+
+  <div class="info-content">
+    <div class="info-content__links">
+      <router-link :to="{ name: 'index' }">To Home</router-link>
+      <router-link :to="{ name: 'test' }">To Test</router-link>
+    </div>
+  </div>
+
   <!-- render route here -->
   <router-view></router-view>
 </template>

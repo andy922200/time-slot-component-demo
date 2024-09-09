@@ -1,8 +1,19 @@
 {
-  "index": {
-    "title": "This is index page."
-  },
-  "test": {
-    "title": "This is about page."
-  }
+  "selected-lang": "Selected Language",
+  "selected-start-dateTime": "Selected Start Date Time",
+  "selected-end-dateTime": "Selected End Date Time",
+  "date": "Date",
+  "start-time": "Start Time",
+  "end-time": "End Time",
+  "next-day": "+1",
+  "now": "Now",
+  "used-time-slots": "Used Time Slot",
+  "max-usage-hours": "Max Usage Hours",
+  "min-usage-hours": "Min Usage Hours",
+  "hours": "Hours",
+  "minutes": "Minutes",
+  "other-fixed-rules": "Other Fixed Rules",
+  "time-sector": "Time Sector",
+  "generate-cross-day": "Generate Cross Day",
+  "is-now-active": "Activate isNow?"
 }
