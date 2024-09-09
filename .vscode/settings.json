@@ -1,0 +1,35 @@
+{
+  "editor.tabSize": 4,
+  "editor.formatOnSave": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.stylelint": "explicit"
+  },
+  "eslint.alwaysShowStatus": true,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue"
+  ],
+  "vetur.validation.template": false,
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+  "stylelint.snippet": [
+    "css",
+    "scss",
+    "postcss",
+    "vue"
+  ],
+  "stylelint.validate": [
+    "css",
+    "scss",
+    "postcss",
+    "vue"
+  ],
+  "cSpell.words": [
+    "pinia"
+  ]
+}
