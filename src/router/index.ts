@@ -13,12 +13,7 @@ const routes = [
   },
 ]
 
-const baseURL = import.meta.env.VITE_BASE_URL
-  ? typeof import.meta.env.VITE_BASE_URL === 'string'
-    ? undefined
-    : import.meta.env.VITE_BASE_URL
-  : undefined
-
+const baseURL = process.env.NODE_ENV === 'production' ? '/time-slot-component-demo/' : ''
 const Router = createRouter({
   history: createWebHashHistory(baseURL),
   linkExactActiveClass: 'active',
