@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
-import dayjs from '@/plugins/dayjs'
 import {
   checkOverlaps,
   EndTimeOption,
@@ -12,24 +11,25 @@ import {
   StartTimeOption,
   TimeSlot,
   TimeSlotFromAPI,
-} from '@/time-slot-filter'
+} from '@/helpers/time-slot'
+import dayjs from '@/plugins/dayjs'
 
 import useStore from '../store/index'
 
 const { main } = useStore()
 const { selectedLanguage } = storeToRefs(main)
 
+const dateFormatStr = 'YYYY-MM-DD'
 const todayDayjs = dayjs()
 const yesterdayDayjs = todayDayjs.subtract(1, 'day')
 const tomorrowDayjs = todayDayjs.add(1, 'day')
-const selectedDate = ref(todayDayjs.format('YYYY-MM-DD'))
+const selectedDate = ref(todayDayjs.format(dateFormatStr))
 const selectedStartTime = ref('')
 const selectedEndObj = ref<EndTimeOption | null>(null)
 const selectedEndDateTime = ref('')
 const timeSlots = ref<TimeSlot[]>([])
 const startTimeOptions = ref<StartTimeOption[]>([])
 const endTimeOptions = ref<EndTimeOption[]>([])
-
 const maxUsageHours = ref(24)
 const minUsageHours = ref(0.5)
 const timeSector = ref(30)
@@ -37,16 +37,24 @@ const generateCrossDay = ref(true)
 const isNowActive = ref(true)
 
 const usedTimeSlots = ref<TimeSlotFromAPI[]>([])
-const maxUsageHoursOptions = [
-  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
-]
+
+const maxUsageHoursOptions = Array.from({ length: 24 }, (_, i) => i + 1)
+const minUsageHoursOptions = computed(() => {
+  const maxHours = 1
+  return Array.from(
+    { length: maxHours / (timeSector.value / 60) },
+    (_, i) => (i + 1) * (timeSector.value / 60),
+  )
+})
+const timeSectorOptions = [15, 30, 60]
+
 const fetchUsedTimeSlots = async () => {
   await new Promise((r) => setTimeout(r, 500))
   return [
-    { startTime: '21:31', endTime: '22:40', date: yesterdayDayjs.format('YYYY-MM-DD') },
-    { startTime: '23:05', endTime: '23:10', date: yesterdayDayjs.format('YYYY-MM-DD') },
-    { startTime: '19:00', endTime: '19:50', date: todayDayjs.format('YYYY-MM-DD') },
-    { startTime: '23:29', endTime: '23:50', date: tomorrowDayjs.format('YYYY-MM-DD') },
+    { startTime: '21:31', endTime: '22:40', date: yesterdayDayjs.format(dateFormatStr) },
+    { startTime: '23:05', endTime: '23:10', date: yesterdayDayjs.format(dateFormatStr) },
+    { startTime: '19:00', endTime: '19:50', date: todayDayjs.format(dateFormatStr) },
+    { startTime: '20:29', endTime: '23:40', date: tomorrowDayjs.format(dateFormatStr) },
   ]
 }
 
@@ -78,18 +86,36 @@ const resetEndTimeArea = () => {
   selectedEndDateTime.value = ''
 }
 
+const getNewTimeSlots = () => {
+  timeSlots.value = generateTimeSlots({
+    targetDate: selectedDate.value,
+    timeSector: timeSector.value,
+    dateFormat: dateFormatStr,
+  })
+
+  checkOverlaps({
+    timeSlots: timeSlots.value,
+    usedTimeSlots: usedTimeSlots.value,
+    targetDate: selectedDate.value,
+    dateFormat: dateFormatStr,
+  })
+}
+
 const generateStartTimeOptions = () => {
-  startTimeOptions.value = getStartTimeOptions({
+  const result = getStartTimeOptions({
     allTimeSlots: timeSlots.value,
     targetDate: selectedDate.value,
     usedTimeSlots: usedTimeSlots.value,
     isNowActive: isNowActive.value,
     timeSector: timeSector.value,
+    dateFormat: dateFormatStr,
   })
+
+  startTimeOptions.value = result
 }
 
 const generateEndTimeOptions = () => {
-  endTimeOptions.value = getEndTimeOptions({
+  const result = getEndTimeOptions({
     startTime: selectedStartTime.value,
     allTimeSlots: timeSlots.value,
     targetDate: selectedDate.value,
@@ -98,23 +124,14 @@ const generateEndTimeOptions = () => {
     minUsageHours: minUsageHours.value,
     timeSector: timeSector.value,
     generateCrossDay: generateCrossDay.value,
+    dateFormat: dateFormatStr,
   })
+  endTimeOptions.value = result
 }
 
 const handleDateChange = () => {
   resetAllSelector()
-
-  timeSlots.value = generateTimeSlots({
-    targetDate: selectedDate.value,
-    timeSector: timeSector.value,
-  })
-
-  checkOverlaps({
-    timeSlots: timeSlots.value,
-    usedTimeSlots: usedTimeSlots.value,
-    targetDate: selectedDate.value,
-  })
-
+  getNewTimeSlots()
   generateStartTimeOptions()
 }
 
@@ -130,33 +147,50 @@ const handleEndTimeChange = () => {
 
   selectedEndDateTime.value =
     nextDayStr === 'next-day'
-      ? `${dayjs(selectedDate.value).add(1, 'day').format('YYYY-MM-DD')} ${time}`
+      ? `${dayjs(selectedDate.value).add(1, 'day').format(dateFormatStr)} ${time}`
       : `${selectedDate.value} ${time}`
+}
+
+const handleMinHourChange = () => {
+  resetEndTimeArea()
+  generateEndTimeOptions()
 }
 
 const handleMaxHourChange = () => {
   resetEndTimeArea()
   generateEndTimeOptions()
 }
+
+const handleTimeSectorChange = () => {
+  if (!minUsageHoursOptions.value.includes(minUsageHours.value)) {
+    minUsageHours.value = minUsageHoursOptions.value[0]
+  }
+
+  resetStartTimeArea()
+  resetEndTimeArea()
+  getNewTimeSlots()
+  generateStartTimeOptions()
+}
+
+const handleGenerateCrossDayChange = () => {
+  resetEndTimeArea()
+  generateEndTimeOptions()
+}
+
+const handleIsNowActive = () => {
+  resetStartTimeArea()
+  resetEndTimeArea()
+  generateStartTimeOptions()
+}
 </script>
 
 <template>
-  <div class="time-slot-demo">
-    <h1>Time Slot 選擇器示範</h1>
-    <h2>{{ $t('selected-lang') }}: {{ selectedLanguage }}</h2>
+  <div class="w-full">
+    <h1 class="text-center text-lg">Time Slot 選擇器示範</h1>
+    <h2 class="text-center text-lg">{{ $t('selected-lang') }}: {{ selectedLanguage }}</h2>
 
-    <div class="other-fixed-rules">
-      <h3>{{ $t('other-fixed-rules') }}</h3>
-      <ul>
-        <li>{{ $t('min-usage-hours') }}: {{ minUsageHours }} {{ $t('hours') }}</li>
-        <li>{{ $t('time-sector') }}: {{ timeSector }} {{ $t('minutes') }}</li>
-        <li>{{ $t('generate-cross-day') }} - true</li>
-        <li>{{ $t('is-now-active') }} - true</li>
-      </ul>
-    </div>
-
-    <div class="used-time-slots">
-      <h3>{{ $t('used-time-slots') }}</h3>
+    <div class="flex items-center justify-center">
+      <h3 class="m-2">{{ $t('used-time-slots') }}</h3>
       <ul>
         <li v-for="slot in usedTimeSlots" :key="slot.startTime">
           <p>{{ slot.date }} {{ slot.startTime }} ~ {{ slot.endTime }}</p>
@@ -164,27 +198,87 @@ const handleMaxHourChange = () => {
       </ul>
     </div>
 
-    <div class="selector-area">
-      <div class="selector">
-        <label for="date-picker">{{ $t('date') }}：</label>
-        <input id="date-picker" v-model="selectedDate" type="date" @change="handleDateChange" />
+    <div class="flex flex-wrap items-center justify-center">
+      <div class="m-2 flex flex-wrap">
+        <div class="mx-2">
+          <label for="generate-cross-day">{{ $t('generate-cross-day') }}：</label>
+          <input
+            id="generate-cross-day"
+            v-model="generateCrossDay"
+            type="checkbox"
+            @change="handleGenerateCrossDayChange"
+          />
+        </div>
+
+        <div class="mx-2">
+          <label for="is-now-active">{{ $t('is-now-active') }}：</label>
+          <input
+            id="is-now-active"
+            v-model="isNowActive"
+            type="checkbox"
+            @change="handleIsNowActive"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap items-center justify-center">
+      <div class="m-2">
+        <label for="time-sector">{{ $t('time-sector') }}：</label>
+        <select
+          id="time-sector"
+          v-model="timeSector"
+          class="min-w-32"
+          @change="handleTimeSectorChange"
+        >
+          <option v-for="item in timeSectorOptions" :key="item" :value="item">
+            {{ item }} {{ $t('minutes') }}
+          </option>
+        </select>
       </div>
 
-      <div class="selector">
-        <label for="max-usage-hours">{{ $t('max-usage-hours') }}：</label>
-        <select id="max-usage-hours" v-model="maxUsageHours" @change="handleMaxHourChange">
-          <option v-for="hours in maxUsageHoursOptions" :key="hours" :value="hours">
+      <div class="m-2">
+        <label for="min-usage-hours">{{ $t('min-usage-hours') }}：</label>
+        <select
+          id="min-usage-hours"
+          v-model="minUsageHours"
+          class="min-w-32"
+          @change="handleMinHourChange"
+        >
+          <option v-for="hours in minUsageHoursOptions" :key="hours" :value="hours">
             {{ hours }} {{ $t('hours') }}
           </option>
         </select>
       </div>
 
-      <div class="selector">
+      <div class="m-2">
+        <label for="max-usage-hours">{{ $t('max-usage-hours') }}：</label>
+        <select
+          id="max-usage-hours"
+          v-model="maxUsageHours"
+          class="min-w-32"
+          @change="handleMaxHourChange"
+        >
+          <option v-for="hours in maxUsageHoursOptions" :key="hours" :value="hours">
+            {{ hours }} {{ $t('hours') }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap items-center justify-center">
+      <div class="m-2">
+        <label for="date-picker">{{ $t('date') }}：</label>
+        <input id="date-picker" v-model="selectedDate" type="date" @change="handleDateChange" />
+      </div>
+
+      <div class="m-2">
         <label for="start-time-picker">{{ $t('start-time') }}：</label>
         <select
           id="start-time-picker"
           v-model="selectedStartTime"
           :disabled="startTimeOptions.length === 0"
+          class="min-w-32"
           @change="handleStartTimeChange"
         >
           <option v-for="option in startTimeOptions" :key="option.value" :value="option.value">
@@ -193,12 +287,13 @@ const handleMaxHourChange = () => {
         </select>
       </div>
 
-      <div class="selector">
+      <div class="m-2">
         <label for="end-time-picker">{{ $t('end-time') }}：</label>
         <select
           id="end-time-picker"
           v-model="selectedEndObj"
           :disabled="endTimeOptions.length === 0"
+          class="min-w-32"
           @change="handleEndTimeChange"
         >
           <option v-for="option in endTimeOptions" :key="option.value" :value="option">
@@ -212,68 +307,13 @@ const handleMaxHourChange = () => {
       </div>
     </div>
 
-    <div class="display-result">
-      <p>{{ $t('selected-start-dateTime') }}： {{ selectedDate }} {{ selectedStartTime }}</p>
-      <p>{{ $t('selected-end-dateTime') }}： {{ selectedEndDateTime }}</p>
+    <div class="flex flex-wrap items-center justify-center">
+      <p class="my-2 w-full text-center">
+        {{ $t('selected-start-dateTime') }}： {{ selectedDate }} {{ selectedStartTime }}
+      </p>
+      <p class="my-2 w-full text-center">
+        {{ $t('selected-end-dateTime') }}： {{ selectedEndDateTime }}
+      </p>
     </div>
   </div>
 </template>
-
-<style lang="scss" scoped>
-.time-slot-demo {
-  width: 100%;
-
-  h1,
-  h2 {
-    text-align: center;
-  }
-
-  .selector-area {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0.5rem 0;
-
-    .selector {
-      margin: 0 0.5rem;
-
-      select {
-        min-width: 8rem;
-      }
-    }
-  }
-
-  .display-result {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-
-    p {
-      width: 100%;
-      text-align: center;
-      margin: 0.5rem 0;
-    }
-  }
-
-  .used-time-slots {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    h3 {
-      margin: 0 0.5rem;
-    }
-  }
-
-  .other-fixed-rules {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    h3 {
-      margin: 0 0.5rem;
-    }
-  }
-}
-</style>
