@@ -33,7 +33,7 @@ const selectedLanguageModel = computed({
   </div>
 
   <div class="w-full">
-    <div class="flex w-full flex-wrap items-center justify-center">
+    <div class="my-2 flex w-full flex-wrap items-center justify-center">
       <router-link :to="{ name: 'index' }" class="m-2">Time Selector 時間選擇</router-link>
       <router-link :to="{ name: 'calendar' }" class="m-2">Calendar 日曆</router-link>
       <router-link :to="{ name: 'selector' }" class="m-2">Selector 選擇器</router-link>
@@ -45,6 +45,10 @@ const selectedLanguageModel = computed({
       <router-link :to="{ name: 'tooltip' }" class="m-2">Tooltip 工具提示框</router-link>
       <router-link :to="{ name: 'spinner' }" class="m-2">Spinner 讀取圖示</router-link>
       <router-link :to="{ name: 'backdrop' }" class="m-2">Backdrop 背景板</router-link>
+      <router-link :to="{ name: 'pagination-buttons' }" class="m-2">
+        Pagination Buttons 分頁按鈕
+      </router-link>
+      <router-link :to="{ name: 'pagination-info' }" class="m-2"> Pagination 分頁資訊 </router-link>
     </div>
   </div>
 

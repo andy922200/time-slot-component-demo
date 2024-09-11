@@ -46,6 +46,16 @@ const routes = [
     name: 'backdrop',
     component: () => import('../views/Backdrop.vue'),
   },
+  {
+    path: '/pagination-buttons',
+    name: 'pagination-buttons',
+    component: () => import('../views/PaginationButtons.vue'),
+  },
+  {
+    path: '/pagination-info',
+    name: 'pagination-info',
+    component: () => import('../views/PaginationInfo.vue'),
+  },
 ]
 
 const baseURL = process.env.NODE_ENV === 'production' ? '/component-library-demo/' : ''
