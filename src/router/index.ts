@@ -31,6 +31,11 @@ const routes = [
     name: 'tooltip',
     component: () => import('../views/Tooltip.vue'),
   },
+  {
+    path: '/spinner',
+    name: 'spinner',
+    component: () => import('../views/Spinner.vue'),
+  },
 ]
 
 const baseURL = process.env.NODE_ENV === 'production' ? '/component-library-demo/' : ''

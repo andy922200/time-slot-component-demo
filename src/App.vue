@@ -33,13 +33,14 @@ const selectedLanguageModel = computed({
   </div>
 
   <div class="w-full">
-    <div class="flex w-full items-center justify-center">
+    <div class="flex w-full flex-wrap items-center justify-center">
       <router-link :to="{ name: 'index' }" class="m-2">Time Selector 時間選擇</router-link>
       <router-link :to="{ name: 'calendar' }" class="m-2">Calendar 日曆</router-link>
       <router-link :to="{ name: 'selector' }" class="m-2">Selector 選擇器</router-link>
       <router-link :to="{ name: 'checkbox' }" class="m-2">Checkbox 核取方塊</router-link>
       <router-link :to="{ name: 'input' }" class="m-2">Input 輸入框</router-link>
       <router-link :to="{ name: 'tooltip' }" class="m-2">Tooltip 工具提示框</router-link>
+      <router-link :to="{ name: 'spinner' }" class="m-2">Spinner 讀取圖示</router-link>
     </div>
   </div>
 
