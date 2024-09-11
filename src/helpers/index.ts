@@ -1,3 +1,3 @@
-import { isCustomEmpty, isMobileAgent } from './utils'
+import { fixedDomOverflow, isCustomEmpty, isMobileAgent } from './utils'
 
-export { isCustomEmpty, isMobileAgent }
+export { fixedDomOverflow, isCustomEmpty, isMobileAgent }

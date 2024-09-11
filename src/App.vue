@@ -41,6 +41,7 @@ const selectedLanguageModel = computed({
       <router-link :to="{ name: 'input' }" class="m-2">Input 輸入框</router-link>
       <router-link :to="{ name: 'tooltip' }" class="m-2">Tooltip 工具提示框</router-link>
       <router-link :to="{ name: 'spinner' }" class="m-2">Spinner 讀取圖示</router-link>
+      <router-link :to="{ name: 'backdrop' }" class="m-2">Backdrop 背景板</router-link>
     </div>
   </div>
 

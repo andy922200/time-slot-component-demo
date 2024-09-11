@@ -36,6 +36,11 @@ const routes = [
     name: 'spinner',
     component: () => import('../views/Spinner.vue'),
   },
+  {
+    path: '/backdrop',
+    name: 'backdrop',
+    component: () => import('../views/Backdrop.vue'),
+  },
 ]
 
 const baseURL = process.env.NODE_ENV === 'production' ? '/component-library-demo/' : ''
