@@ -20,7 +20,11 @@ const selectedLanguageModel = computed({
 
 <template>
   <div class="flex items-center justify-center">
-    <img alt="Vue logo" src="./assets/logo.png" />
+    <img alt="Vue logo" src="./assets/logo.png" class="size-20" />
+  </div>
+
+  <div class="my-2 flex items-center justify-center">
+    <p class="mx-2">語言選擇 Language Select</p>
     <select v-model="selectedLanguageModel">
       <option v-for="list in LayoutLanguages" :key="list.param" :value="list.param">
         {{ list.title }}
@@ -30,8 +34,8 @@ const selectedLanguageModel = computed({
 
   <div class="w-full">
     <div class="flex w-full items-center justify-center">
-      <router-link :to="{ name: 'index' }" class="mb-2">To Home</router-link>
-      <router-link :to="{ name: 'test' }" class="mb-2">To Test</router-link>
+      <router-link :to="{ name: 'index' }" class="m-2">Time Selector 時間選擇</router-link>
+      <router-link :to="{ name: 'test' }" class="m-2">To Test</router-link>
     </div>
   </div>
 

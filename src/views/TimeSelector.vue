@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
 import { computed, onMounted, ref } from 'vue'
 
 import {
@@ -11,13 +10,8 @@ import {
   StartTimeOption,
   TimeSlot,
   TimeSlotFromAPI,
-} from '@/helpers/time-slot'
+} from '@/helpers/time-selector'
 import dayjs from '@/plugins/dayjs'
-
-import useStore from '../store/index'
-
-const { main } = useStore()
-const { selectedLanguage } = storeToRefs(main)
 
 const dateFormatStr = 'YYYY-MM-DD'
 const todayDayjs = dayjs()
@@ -51,10 +45,11 @@ const timeSectorOptions = [15, 30, 60]
 const fetchUsedTimeSlots = async () => {
   await new Promise((r) => setTimeout(r, 500))
   return [
-    { startTime: '21:31', endTime: '22:40', date: yesterdayDayjs.format(dateFormatStr) },
-    { startTime: '23:05', endTime: '23:10', date: yesterdayDayjs.format(dateFormatStr) },
-    { startTime: '19:00', endTime: '19:50', date: todayDayjs.format(dateFormatStr) },
-    { startTime: '20:29', endTime: '23:40', date: tomorrowDayjs.format(dateFormatStr) },
+    { startTime: '21:00', endTime: '22:30', date: yesterdayDayjs.format(dateFormatStr) },
+    { startTime: '08:00', endTime: '08:30', date: todayDayjs.format(dateFormatStr) },
+    { startTime: '23:00', endTime: '23:30', date: todayDayjs.format(dateFormatStr) },
+    { startTime: '00:00', endTime: '00:50', date: tomorrowDayjs.format(dateFormatStr) },
+    { startTime: '20:30', endTime: '23:30', date: tomorrowDayjs.format(dateFormatStr) },
   ]
 }
 
@@ -186,8 +181,7 @@ const handleIsNowActive = () => {
 
 <template>
   <div class="w-full">
-    <h1 class="text-center text-lg">Time Slot 選擇器示範</h1>
-    <h2 class="text-center text-lg">{{ $t('selected-lang') }}: {{ selectedLanguage }}</h2>
+    <h1 class="text-center text-lg">Time Selector 選擇器</h1>
 
     <div class="flex items-center justify-center">
       <h3 class="m-2">{{ $t('used-time-slots') }}</h3>

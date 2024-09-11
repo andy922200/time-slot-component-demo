@@ -9,4 +9,4 @@ export const messages = {
   [Locales.zhCn]: zhCn,
 }
 
-export const defaultLocale = Locales.enUs
+export const defaultLocale = Locales.zhTw

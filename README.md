@@ -1,8 +1,4 @@
-# Vue 3 + Typescript + Vite
-
-<p align="center">
-    <img src="./iconForReadme.png" alt="logo" width="128" height="128">
-</p>
+# Component Library Demo
 
 ## Table of Contents
 - [Recommended IDE Setup](#recommended-ide-setup)
@@ -35,14 +31,14 @@
 - [yarn](https://yarnpkg.com/)
 - [Node.js](https://nodejs.org/en/download/)
 
-This Demo project is running on Node.js (16.17.0), NPM (8.15.0) while testing.
+This Demo project is running on Node.js (20.12.0), NPM (10.5.0) while testing.
 
 ## Clone / Download
 1. Clone this repository to your local machine
 2. Start your development
 
 ```
-$ git clone https://github.com/andy922200/vite-vue3-ts-template.git
+$ git clone https://github.com/andy922200/component-library-demo.git
 ```
 
 ## Related Scripts

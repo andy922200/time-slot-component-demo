@@ -4,7 +4,7 @@ const routes = [
   {
     path: '/',
     name: 'index',
-    component: () => import('../views/TimeSlotDemo.vue'),
+    component: () => import('../views/TimeSelector.vue'),
   },
   {
     path: '/test',
@@ -13,7 +13,7 @@ const routes = [
   },
 ]
 
-const baseURL = process.env.NODE_ENV === 'production' ? '/time-slot-component-demo/' : ''
+const baseURL = process.env.NODE_ENV === 'production' ? '/component-library-demo/' : ''
 const Router = createRouter({
   history: createWebHashHistory(baseURL),
   linkExactActiveClass: 'active',
