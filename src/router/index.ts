@@ -16,6 +16,11 @@ const routes = [
     name: 'selector',
     component: () => import('../views/Selector.vue'),
   },
+  {
+    path: '/checkbox',
+    name: 'checkbox',
+    component: () => import('../views/Checkbox.vue'),
+  },
 ]
 
 const baseURL = process.env.NODE_ENV === 'production' ? '/component-library-demo/' : ''

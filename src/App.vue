@@ -37,6 +37,7 @@ const selectedLanguageModel = computed({
       <router-link :to="{ name: 'index' }" class="m-2">Time Selector 時間選擇</router-link>
       <router-link :to="{ name: 'calendar' }" class="m-2">Calendar 日曆</router-link>
       <router-link :to="{ name: 'selector' }" class="m-2">Selector 選擇器</router-link>
+      <router-link :to="{ name: 'checkbox' }" class="m-2">Checkbox 核取方塊</router-link>
     </div>
   </div>
 
