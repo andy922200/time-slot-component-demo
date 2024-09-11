@@ -35,7 +35,7 @@ const selectedLanguageModel = computed({
   <div class="w-full">
     <div class="flex w-full items-center justify-center">
       <router-link :to="{ name: 'index' }" class="m-2">Time Selector 時間選擇</router-link>
-      <router-link :to="{ name: 'test' }" class="m-2">To Test</router-link>
+      <router-link :to="{ name: 'calendar' }" class="m-2">Calendar 日曆</router-link>
     </div>
   </div>
 
