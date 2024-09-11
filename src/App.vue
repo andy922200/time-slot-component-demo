@@ -51,6 +51,7 @@ const selectedLanguageModel = computed({
       <router-link :to="{ name: 'pagination-info' }" class="m-2"> Pagination 分頁資訊 </router-link>
       <router-link :to="{ name: 'div-table' }" class="m-2"> DIV Table 表格 </router-link>
       <router-link :to="{ name: 'switch' }" class="m-2"> Switch 切換按鈕 </router-link>
+      <router-link :to="{ name: 'tag' }" class="m-2"> Tag 標籤 </router-link>
     </div>
   </div>
 

@@ -66,6 +66,11 @@ const routes = [
     name: 'switch',
     component: () => import('../views/Switch.vue'),
   },
+  {
+    path: '/tag',
+    name: 'tag',
+    component: () => import('../views/Tag.vue'),
+  },
 ]
 
 const baseURL = process.env.NODE_ENV === 'production' ? '/component-library-demo/' : ''
