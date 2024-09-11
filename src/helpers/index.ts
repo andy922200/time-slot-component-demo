@@ -1,3 +1,3 @@
-import { isCustomEmpty } from './utils'
+import { isCustomEmpty, isMobileAgent } from './utils'
 
-export { isCustomEmpty }
+export { isCustomEmpty, isMobileAgent }

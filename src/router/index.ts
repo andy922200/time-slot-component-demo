@@ -26,6 +26,11 @@ const routes = [
     name: 'input',
     component: () => import('../views/Input.vue'),
   },
+  {
+    path: '/tooltip',
+    name: 'tooltip',
+    component: () => import('../views/Tooltip.vue'),
+  },
 ]
 
 const baseURL = process.env.NODE_ENV === 'production' ? '/component-library-demo/' : ''
