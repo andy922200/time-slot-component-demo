@@ -61,6 +61,11 @@ const routes = [
     name: 'div-table',
     component: () => import('../views/DivTable.vue'),
   },
+  {
+    path: '/switch',
+    name: 'switch',
+    component: () => import('../views/Switch.vue'),
+  },
 ]
 
 const baseURL = process.env.NODE_ENV === 'production' ? '/component-library-demo/' : ''

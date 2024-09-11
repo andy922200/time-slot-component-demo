@@ -15,5 +15,7 @@
   "other-fixed-rules": "其他固定規則",
   "time-sector": "時間區間",
   "generate-cross-day": "生成跨日",
-  "is-now-active": "啟用即刻預約?"
+  "is-now-active": "啟用即刻預約?",
+  "close": "關閉",
+  "open": "開啟"
 }

@@ -15,5 +15,7 @@
   "other-fixed-rules": "Other Fixed Rules",
   "time-sector": "Time Sector",
   "generate-cross-day": "Generate Cross Day",
-  "is-now-active": "Activate isNow?"
+  "is-now-active": "Activate isNow?",
+  "close": "Close",
+  "open": "Open"
 }
