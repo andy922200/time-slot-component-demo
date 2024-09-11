@@ -25,4 +25,5 @@ git commit -m '~~deploy~~'
 git push -f https://github.com/andy922200/component-library-demo.git master:gh-pages
 
 cd -
-rm -rf .git
+
+rm -rf dist/.git
