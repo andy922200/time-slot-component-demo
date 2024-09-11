@@ -3,12 +3,16 @@
 # abort on errors
 set -e
 
-# build
-# 將專案打包
+# build the project
 npm run build
 
-# navigate into the build output directory
-cd dist
+# check if the dist directory exists
+if [ -d "dist" ]; then
+  cd dist
+else
+  echo "Build directory 'dist' does not exist, aborting."
+  exit 1
+fi
 
 # place .nojekyll to bypass Jekyll processing
 echo > .nojekyll
@@ -16,14 +20,17 @@ echo > .nojekyll
 # if you are deploying to a custom domain
 # echo 'www.example.com' > CNAME
 
+# remove previous .git folder and initialize git again
+rm -rf .git
 git init
-git add -A
-git commit -m '~~deploy~~'
 
-# 如果你要部署在 https://<USERNAME>.github.io
-# git push -f git@github.com:<USERNAME>/<USERNAME>.github.io.git main
-git push -f https://github.com/andy922200/component-library-demo.git master:gh-pages
+git add -A
+git commit -m 'deploy'
+
+# push to gh-pages branch
+git push -f https://github.com/andy922200/component-library-demo.git main:gh-pages
 
 cd -
 
+# clean up
 rm -rf dist/.git
