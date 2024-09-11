@@ -56,6 +56,11 @@ const routes = [
     name: 'pagination-info',
     component: () => import('../views/PaginationInfo.vue'),
   },
+  {
+    path: '/div-table',
+    name: 'div-table',
+    component: () => import('../views/DivTable.vue'),
+  },
 ]
 
 const baseURL = process.env.NODE_ENV === 'production' ? '/component-library-demo/' : ''
