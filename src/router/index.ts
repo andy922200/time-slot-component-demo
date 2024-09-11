@@ -11,6 +11,11 @@ const routes = [
     name: 'calendar',
     component: () => import('../views/Calendar.vue'),
   },
+  {
+    path: '/selector',
+    name: 'selector',
+    component: () => import('../views/Selector.vue'),
+  },
 ]
 
 const baseURL = process.env.NODE_ENV === 'production' ? '/component-library-demo/' : ''
