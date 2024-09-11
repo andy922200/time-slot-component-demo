@@ -53,6 +53,7 @@ const selectedLanguageModel = computed({
       <router-link :to="{ name: 'switch' }" class="m-2"> Switch 切換按鈕 </router-link>
       <router-link :to="{ name: 'tag' }" class="m-2"> Tag 標籤 </router-link>
       <router-link :to="{ name: 'tree-view' }" class="m-2"> TreeView 樹狀結構 </router-link>
+      <router-link :to="{ name: 'expansion' }" class="m-2"> Expansion 展開元件 </router-link>
     </div>
   </div>
 

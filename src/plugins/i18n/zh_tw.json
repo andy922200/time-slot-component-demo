@@ -17,5 +17,6 @@
   "generate-cross-day": "生成跨日",
   "is-now-active": "啟用即刻預約?",
   "close": "關閉",
-  "open": "開啟"
+  "open": "開啟",
+  "single-mode": "單一模式"
 }
