@@ -54,6 +54,7 @@ const selectedLanguageModel = computed({
       <router-link :to="{ name: 'tag' }" class="m-2"> Tag 標籤 </router-link>
       <router-link :to="{ name: 'tree-view' }" class="m-2"> TreeView 樹狀結構 </router-link>
       <router-link :to="{ name: 'expansion' }" class="m-2"> Expansion 展開元件 </router-link>
+      <router-link :to="{ name: 'time-slots' }" class="m-2"> TimeSlots 時間間隔顯示 </router-link>
     </div>
   </div>
 

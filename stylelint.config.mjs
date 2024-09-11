@@ -7,5 +7,7 @@ export default {
   ],
   rules: {
     'selector-class-pattern': null,
+    'custom-property-pattern': null,
+    'selector-pseudo-element-colon-notation': null,
   },
 }

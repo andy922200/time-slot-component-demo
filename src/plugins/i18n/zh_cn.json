@@ -18,5 +18,8 @@
   "is-now-active": "启用即刻预约?",
   "close": "关闭",
   "open": "开启",
-  "single-mode": "单一模式"
+  "single-mode": "单一模式",
+  "time-slot-status": "时间段状态",
+  "disabled": "停止使用",
+  "used": "已使用"
 }

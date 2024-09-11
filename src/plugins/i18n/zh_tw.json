@@ -18,5 +18,7 @@
   "is-now-active": "啟用即刻預約?",
   "close": "關閉",
   "open": "開啟",
-  "single-mode": "單一模式"
+  "single-mode": "單一模式",
+  "disabled": "停止使用",
+  "used": "已使用"
 }

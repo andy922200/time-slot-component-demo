@@ -18,5 +18,8 @@
   "is-now-active": "Activate isNow?",
   "close": "Close",
   "open": "Open",
-  "single-mode": "Single Mode"
+  "single-mode": "Single Mode",
+  "time-slot-status": "Time Slot Status",
+  "disabled": "Disabled",
+  "used": "Used"
 }

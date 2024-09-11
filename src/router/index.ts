@@ -81,6 +81,11 @@ const routes = [
     name: 'expansion',
     component: () => import('../views/Expansion.vue'),
   },
+  {
+    path: '/time-slots',
+    name: 'time-slots',
+    component: () => import('../views/TimeSlots.vue'),
+  },
 ]
 
 const baseURL = process.env.NODE_ENV === 'production' ? '/component-library-demo/' : ''
