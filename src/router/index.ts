@@ -71,6 +71,11 @@ const routes = [
     name: 'tag',
     component: () => import('../views/Tag.vue'),
   },
+  {
+    path: '/tree-view',
+    name: 'tree-view',
+    component: () => import('../views/TreeView.vue'),
+  },
 ]
 
 const baseURL = process.env.NODE_ENV === 'production' ? '/component-library-demo/' : ''
