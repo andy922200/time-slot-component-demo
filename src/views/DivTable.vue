@@ -11,6 +11,10 @@ const data: Record<string, any>[] = [
   { name: 'John', age: '30' },
   { name: 'Jane', age: '25' },
 ]
+
+defineOptions({
+  name: 'DemoDivTable',
+})
 </script>
 
 <template>

@@ -14,6 +14,10 @@ const options: BaseSelectOption[] = [
   { id: '2', label: 'Option 2', value: 'option2' },
   { id: '3', label: 'Option 3', value: 'option3' },
 ]
+
+defineOptions({
+  name: 'DemoSelector',
+})
 </script>
 
 <template>

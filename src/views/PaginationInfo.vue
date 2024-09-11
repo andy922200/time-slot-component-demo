@@ -7,6 +7,10 @@ import PaginationInfo from '@/components/Pagination/PaginationInfo.vue'
 const currentPage = ref(1)
 const pageCount = ref(10)
 const totalAmount = ref(95)
+
+defineOptions({
+  name: 'DemoPaginationInfo',
+})
 </script>
 
 <template>

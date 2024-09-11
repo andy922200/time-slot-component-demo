@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import BaseTooltip from '@/components/BaseTooltip/index.vue'
+
+defineOptions({
+  name: 'DemoTooltip',
+})
 </script>
 
 <template>

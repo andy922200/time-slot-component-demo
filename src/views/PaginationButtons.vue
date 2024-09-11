@@ -6,6 +6,10 @@ import PaginationButtons from '@/components/Pagination/PaginationButtons.vue'
 const currentPage = ref(1)
 const pageCount = ref(10)
 const totalAmount = ref(95)
+
+defineOptions({
+  name: 'DemoPaginationButtons',
+})
 </script>
 
 <template>

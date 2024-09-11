@@ -7,6 +7,10 @@ const inputItem = ref({
   val: '',
   isError: false,
 })
+
+defineOptions({
+  name: 'DemoInput',
+})
 </script>
 
 <template>

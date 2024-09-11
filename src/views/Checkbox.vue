@@ -10,6 +10,10 @@ const optionStyle = {
   checkedBorderColor: '#16a34a',
   defaultMarkIconColor: '#16a34a',
 }
+
+defineOptions({
+  name: 'DemoCheckbox',
+})
 </script>
 
 <template>

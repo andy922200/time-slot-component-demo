@@ -13,6 +13,10 @@ import {
 } from '@/helpers/time-selector'
 import dayjs from '@/plugins/dayjs'
 
+defineOptions({
+  name: 'DemoTimeSelector',
+})
+
 const dateFormatStr = 'YYYY-MM-DD'
 const todayDayjs = dayjs()
 const yesterdayDayjs = todayDayjs.subtract(1, 'day')

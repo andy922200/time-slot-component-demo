@@ -3,6 +3,10 @@ import Backdrop from '@/components/Backdrop/index.vue'
 import { useBackdrop } from '@/composables/useBackdrop'
 
 const { isShowBackdrop, showBackdrop, closeBackdrop } = useBackdrop()
+
+defineOptions({
+  name: 'DemoBackdrop',
+})
 </script>
 
 <template>

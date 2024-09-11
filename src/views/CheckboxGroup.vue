@@ -23,6 +23,10 @@ const optionStyle = {
 const selectedOptions = computed(() =>
   optionMap.value.data.filter((option) => option.checked && !option.isFather),
 )
+
+defineOptions({
+  name: 'DemoCheckboxGroup',
+})
 </script>
 
 <template>

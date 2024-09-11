@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import Spinner from '@/components/Spinner/index.vue'
+
+defineOptions({
+  name: 'DemoSpinner',
+})
 </script>
 
 <template>

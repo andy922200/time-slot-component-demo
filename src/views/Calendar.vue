@@ -4,6 +4,10 @@ import { ref } from 'vue'
 import BaseCalendar from '@/components/BaseCalendar/index.vue'
 
 const selectedDate = ref<string>('')
+
+defineOptions({
+  name: 'DemoCalendar',
+})
 </script>
 
 <template>
