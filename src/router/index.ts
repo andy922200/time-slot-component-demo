@@ -86,6 +86,11 @@ const routes = [
     name: 'time-slots',
     component: () => import('../views/TimeSlots.vue'),
   },
+  {
+    path: '/radio-group',
+    name: 'radio-group',
+    component: () => import('../views/RadioGroup.vue'),
+  },
 ]
 
 const baseURL = process.env.NODE_ENV === 'production' ? '/component-library-demo/' : ''
