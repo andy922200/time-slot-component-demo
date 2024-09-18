@@ -91,6 +91,11 @@ const routes = [
     name: 'radio-group',
     component: () => import('../views/RadioGroup.vue'),
   },
+  {
+    path: '/test',
+    name: 'test',
+    component: () => import('../views/Test.vue'),
+  },
 ]
 
 const baseURL = process.env.NODE_ENV === 'production' ? '/component-library-demo/' : ''

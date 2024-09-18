@@ -7,6 +7,7 @@ import 'dayjs/locale/de'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import duration from 'dayjs/plugin/duration'
+import isBetween from 'dayjs/plugin/isBetween'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import isSameBefore from 'dayjs/plugin/isSameOrBefore'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
@@ -16,6 +17,7 @@ import utc from 'dayjs/plugin/utc'
 
 dayjs.extend(utc)
 dayjs.extend(duration)
+dayjs.extend(isBetween)
 dayjs.extend(relativeTime)
 dayjs.extend(customParseFormat)
 dayjs.extend(localizedFormat)

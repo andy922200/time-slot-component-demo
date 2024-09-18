@@ -56,6 +56,7 @@ const selectedLanguageModel = computed({
       <router-link :to="{ name: 'expansion' }" class="m-2"> Expansion 展開元件 </router-link>
       <router-link :to="{ name: 'time-slots' }" class="m-2"> TimeSlots 時間間隔顯示 </router-link>
       <router-link :to="{ name: 'radio-group' }" class="m-2"> RadioGroup 單選按鈕組 </router-link>
+      <router-link :to="{ name: 'test' }" class="m-2"> Test 測試 </router-link>
     </div>
   </div>
 
