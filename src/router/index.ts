@@ -91,6 +91,11 @@ const routes = [
     name: 'radio-group',
     component: () => import('../views/RadioGroup.vue'),
   },
+  {
+    path: '/cycle-time-selector',
+    name: 'cycle-time-selector',
+    component: () => import('../views/CycleTimeSelector.vue'),
+  },
 ]
 
 const baseURL = process.env.NODE_ENV === 'production' ? '/component-library-demo/' : ''

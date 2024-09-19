@@ -21,5 +21,7 @@
   "single-mode": "单一模式",
   "time-slot-status": "时间段状态",
   "disabled": "停止使用",
-  "used": "已使用"
+  "used": "已使用",
+  "please-select-start-time": "开始时间",
+  "please-select-end-time": "结束时间"
 }

@@ -20,5 +20,7 @@
   "open": "開啟",
   "single-mode": "單一模式",
   "disabled": "停止使用",
-  "used": "已使用"
+  "used": "已使用",
+  "please-select-start-time": "開始時間",
+  "please-select-end-time": "結束時間"
 }

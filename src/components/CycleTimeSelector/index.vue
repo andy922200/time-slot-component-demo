@@ -1,0 +1,161 @@
+<script setup lang="ts">
+import { computed, ref, watch, withDefaults } from 'vue'
+
+import BaseSwitch from '@/components/BaseSwitch/index.vue'
+import { generateDailyTimeSlots } from '@/helpers/utils'
+
+import { CycleTimeSelectorEmitItem, WeekDayItem, weekDayLocale } from './type'
+
+const props = withDefaults(
+  defineProps<{
+    weekStartDay?: number
+    timeSlotDuration?: number
+    disabledDays?: number[]
+    locale?: 'en' | 'zh_tw' | 'zh_cn'
+    isAbbrText?: boolean
+    selectClass?: string
+    optionClass?: string
+  }>(),
+  {
+    weekStartDay: 0,
+    timeSlotDuration: 30,
+    disabledDays: () => [],
+    locale: 'zh_tw',
+    isAbbrText: false,
+    selectClass:
+      'w-full truncate rounded border border-[#ccc] py-2 pl-2 pr-8 focus:border-blue-300 focus:ring-blue-300 min-w-32',
+    optionClass: '',
+  },
+)
+
+const emits = defineEmits<{
+  change: [value: CycleTimeSelectorEmitItem[]]
+}>()
+
+const weekDaysRaw = ref<WeekDayItem[]>(
+  Array.from({ length: 7 }, (_, weekday) => {
+    const isDisableDay = props.disabledDays.includes(weekday)
+
+    return {
+      selectedStartTime: '',
+      selectedEndTime: '',
+      value: weekday.toString(),
+      text: props.isAbbrText
+        ? weekDayLocale[props.locale]?.[weekday].abbr
+        : weekDayLocale[props.locale]?.[weekday].full,
+      isToggle: false,
+      isDisableDay,
+      startTimeOptions: isDisableDay
+        ? []
+        : [
+            { start: '', end: '', weekday: '' },
+            ...generateDailyTimeSlots({
+              timeSlotDuration: props.timeSlotDuration,
+              weekday: weekday.toString(),
+            }),
+          ],
+      endTimeOptions: isDisableDay ? [] : [{ start: '', end: '', weekday: '' }],
+    }
+  }),
+)
+
+const dynamicWeekDayArray = computed(() => {
+  const startIndex = props.weekStartDay
+  return [...weekDaysRaw.value.slice(startIndex), ...weekDaysRaw.value.slice(0, startIndex)]
+})
+
+// 監聽每一天的開始時間，並單獨更新其結束時間選單
+dynamicWeekDayArray.value.forEach((item) => {
+  watch(
+    () => item.selectedStartTime,
+    () => {
+      item.selectedEndTime = ''
+      item.endTimeOptions = [
+        { start: '', end: '', weekday: '' },
+        ...item.startTimeOptions.filter((option) => {
+          if (!item.selectedStartTime) return false
+          return option.start >= item.selectedStartTime
+        }),
+      ]
+    },
+    { deep: true },
+  )
+})
+
+watch(
+  () => dynamicWeekDayArray.value,
+  (newVal) => {
+    const toggleResult: CycleTimeSelectorEmitItem[] = newVal
+      .filter((item) => item.isToggle)
+      .map((item) => ({
+        selectedStartTime: item.selectedStartTime,
+        selectedEndTime: item.selectedEndTime,
+        weekday: item.value,
+        text: item.text,
+        isValid: !!item.selectedStartTime && !!item.selectedEndTime,
+      }))
+    emits('change', toggleResult)
+  },
+  { deep: true },
+)
+
+defineOptions({
+  name: 'CycleTimeSelector',
+})
+</script>
+
+<template>
+  <div class="cycle-time-selector flex flex-wrap">
+    <div
+      v-for="(item, index) in dynamicWeekDayArray"
+      :key="index"
+      class="my-2 flex w-full flex-wrap items-center justify-center"
+    >
+      <div class="label__wrapper mr-2">
+        <label :for="`toggle-${index}`" class="mx-2">{{ item.text }}</label>
+        <span v-if="item.isDisableDay" class="inline-block w-20 text-center">
+          <slot name="disable-day-text">無適用時段</slot>
+        </span>
+        <BaseSwitch v-else :id="`toggle-${index}`" v-model:value="item.isToggle" class="w-20" />
+      </div>
+
+      <div class="start-options__wrapper mx-2" :class="{ invisible: !item.isToggle }">
+        <select
+          :id="`start-${index}`"
+          v-model="item.selectedStartTime"
+          :disabled="!item.isToggle"
+          :class="[props.selectClass]"
+        >
+          <option
+            v-for="(option, optionIndex) in item.startTimeOptions"
+            :key="`start-${index}-${optionIndex}`"
+            :value="option.start"
+            :class="[props.optionClass]"
+            :disabled="option.start === ''"
+          >
+            {{ option.start === '' ? $t('please-select-start-time') : option.start }}
+          </option>
+        </select>
+      </div>
+
+      <div class="end-options__wrapper ml-2" :class="{ invisible: !item.isToggle }">
+        <select
+          :id="`end-${index}`"
+          v-model="item.selectedEndTime"
+          :disabled="!item.isToggle"
+          :class="[props.selectClass]"
+        >
+          <option
+            v-for="(option, optionIndex) in item.endTimeOptions"
+            :key="`end-${index}-${optionIndex}`"
+            :value="option.end"
+            :class="[props.optionClass]"
+            :disabled="option.end === ''"
+          >
+            {{ option.end === '' ? $t('please-select-end-time') : option.end }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+</template>

@@ -21,5 +21,7 @@
   "single-mode": "Single Mode",
   "time-slot-status": "Time Slot Status",
   "disabled": "Disabled",
-  "used": "Used"
+  "used": "Used",
+  "please-select-start-time": "Start Time",
+  "please-select-end-time": "End Time"
 }
