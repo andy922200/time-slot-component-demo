@@ -92,9 +92,9 @@ const routes = [
     component: () => import('../views/RadioGroup.vue'),
   },
   {
-    path: '/test',
-    name: 'test',
-    component: () => import('../views/Test.vue'),
+    path: '/cycle-time-selector',
+    name: 'cycle-time-selector',
+    component: () => import('../views/CycleTimeSelector.vue'),
   },
 ]
 

@@ -24,3 +24,32 @@ export const isCustomEmpty = (value: any) => {
 
   return false
 }
+
+export const generateDailyTimeSlots = ({
+  timeSlotDuration,
+  weekday,
+}: {
+  timeSlotDuration: number
+  weekday: string
+}) => {
+  const allTimeSlots = []
+  let hour = 0
+  let minute = 0
+
+  while (hour < 24) {
+    const start = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`
+    minute += timeSlotDuration
+    if (minute === 60) {
+      minute = 0
+      hour++
+    }
+    const end = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`
+    allTimeSlots.push({
+      start,
+      end,
+      weekday,
+    })
+  }
+
+  return allTimeSlots
+}
