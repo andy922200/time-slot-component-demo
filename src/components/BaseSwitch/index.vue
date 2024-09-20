@@ -34,6 +34,10 @@ const props = defineProps({
     type: String,
     default: '#00b300',
   },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
 })
 const emits = defineEmits(['update:value'])
 
@@ -69,12 +73,14 @@ defineOptions({
       <input
         :id="switchId"
         v-model="isBaseSwitchOn"
+        :disabled="props.disabled"
         type="checkbox"
         class="switch-checkbox hidden"
       />
       <label
-        class="switch-background relative m-0 flex h-3 cursor-pointer items-center justify-start rounded-[1em] border border-solid border-[#ccc] bg-[#cccccc] px-0 py-[0.1em] transition-all duration-[0.3s] ease-[ease]"
+        class="switch-background relative m-0 flex h-3 items-center justify-start rounded-[1em] border border-solid border-[#ccc] bg-[#cccccc] px-0 py-[0.1em] transition-all duration-[0.3s] ease-[ease]"
         :for="switchId"
+        :class="[props.disabled ? 'cursor-not-allowed' : 'cursor-pointer']"
         :style="{
           width: `${width}px`,
           background: isBaseSwitchOn ? switchOnColor : switchOffColor,

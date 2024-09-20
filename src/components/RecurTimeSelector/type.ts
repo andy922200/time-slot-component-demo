@@ -47,7 +47,7 @@ export interface WeekDayItem {
   endTimeOptions: WeekDayItemOption[]
 }
 
-export interface CycleTimeSelectorEmitItem {
+export interface RecurTimeSelectorEmitItem {
   isValid: boolean
   selectedStartTime: string
   selectedEndTime: string

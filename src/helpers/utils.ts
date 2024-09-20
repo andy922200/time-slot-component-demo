@@ -1,3 +1,5 @@
+import dayjs from '@/plugins/dayjs'
+
 export const fixedDomOverflow = (dom: HTMLElement | null, boolean: boolean) => {
   if (!dom) return
   dom.style.overflow = boolean ? 'hidden' : ''
@@ -52,4 +54,34 @@ export const generateDailyTimeSlots = ({
   }
 
   return allTimeSlots
+}
+
+export const checkWeekdaysInRange = ({
+  startDate,
+  endDate,
+}: {
+  startDate: string
+  endDate: string
+}) => {
+  if (!startDate || !endDate) return null
+
+  let currentDate = dayjs(startDate)
+  const end = dayjs(endDate)
+  const weekdaysFound = new Set()
+
+  while (currentDate.isSameOrBefore(end)) {
+    const weekday = currentDate.day()
+    weekdaysFound.add(weekday)
+
+    if (weekdaysFound.size === 7) {
+      break
+    }
+
+    currentDate = currentDate.add(1, 'day')
+  }
+
+  const include = Array.from(weekdaysFound)
+  const exclude = [0, 1, 2, 3, 4, 5, 6].filter((day) => !weekdaysFound.has(day))
+
+  return { include, exclude }
 }

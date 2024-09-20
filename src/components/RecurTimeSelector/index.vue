@@ -4,10 +4,11 @@ import { computed, ref, watch, withDefaults } from 'vue'
 import BaseSwitch from '@/components/BaseSwitch/index.vue'
 import { generateDailyTimeSlots } from '@/helpers/utils'
 
-import { CycleTimeSelectorEmitItem, WeekDayItem, weekDayLocale } from './type'
+import { RecurTimeSelectorEmitItem, WeekDayItem, weekDayLocale } from './type'
 
 const props = withDefaults(
   defineProps<{
+    closeAllSelector?: boolean
     weekStartDay?: number
     timeSlotDuration?: number
     disabledDays?: number[]
@@ -17,6 +18,7 @@ const props = withDefaults(
     optionClass?: string
   }>(),
   {
+    closeAllSelector: false,
     weekStartDay: 0,
     timeSlotDuration: 30,
     disabledDays: () => [],
@@ -29,11 +31,17 @@ const props = withDefaults(
 )
 
 const emits = defineEmits<{
-  change: [value: CycleTimeSelectorEmitItem[]]
+  change: [value: RecurTimeSelectorEmitItem[]]
 }>()
 
-const weekDaysRaw = ref<WeekDayItem[]>(
-  Array.from({ length: 7 }, (_, weekday) => {
+const weekDaysRaw = ref<WeekDayItem[]>([])
+const dynamicWeekDayArray = computed(() => {
+  const startIndex = props.weekStartDay
+  return [...weekDaysRaw.value.slice(startIndex), ...weekDaysRaw.value.slice(0, startIndex)]
+})
+
+const updateWeekDays = () => {
+  weekDaysRaw.value = Array.from({ length: 7 }, (_, weekday) => {
     const isDisableDay = props.disabledDays.includes(weekday)
 
     return {
@@ -56,36 +64,43 @@ const weekDaysRaw = ref<WeekDayItem[]>(
           ],
       endTimeOptions: isDisableDay ? [] : [{ start: '', end: '', weekday: '' }],
     }
-  }),
+  })
+}
+
+const setupStartTimeWatchers = () => {
+  // 監聽每一天的開始時間，並單獨更新其結束時間選單
+  dynamicWeekDayArray.value.forEach((item) => {
+    watch(
+      () => item.selectedStartTime,
+      () => {
+        item.selectedEndTime = ''
+        item.endTimeOptions = [
+          { start: '', end: '', weekday: '' },
+          ...item.startTimeOptions.filter((option) => {
+            if (!item.selectedStartTime) return false
+            return option.start >= item.selectedStartTime
+          }),
+        ]
+      },
+      { deep: true },
+    )
+  })
+}
+
+// 監聽 disabledDays 的變化，並更新 weekDaysRaw 和重新設定 startTime 的 watch
+watch(
+  () => props.disabledDays,
+  () => {
+    updateWeekDays()
+    setupStartTimeWatchers()
+  },
+  { deep: true, immediate: true },
 )
-
-const dynamicWeekDayArray = computed(() => {
-  const startIndex = props.weekStartDay
-  return [...weekDaysRaw.value.slice(startIndex), ...weekDaysRaw.value.slice(0, startIndex)]
-})
-
-// 監聽每一天的開始時間，並單獨更新其結束時間選單
-dynamicWeekDayArray.value.forEach((item) => {
-  watch(
-    () => item.selectedStartTime,
-    () => {
-      item.selectedEndTime = ''
-      item.endTimeOptions = [
-        { start: '', end: '', weekday: '' },
-        ...item.startTimeOptions.filter((option) => {
-          if (!item.selectedStartTime) return false
-          return option.start >= item.selectedStartTime
-        }),
-      ]
-    },
-    { deep: true },
-  )
-})
 
 watch(
   () => dynamicWeekDayArray.value,
   (newVal) => {
-    const toggleResult: CycleTimeSelectorEmitItem[] = newVal
+    const toggleResult: RecurTimeSelectorEmitItem[] = newVal
       .filter((item) => item.isToggle)
       .map((item) => ({
         selectedStartTime: item.selectedStartTime,
@@ -100,12 +115,12 @@ watch(
 )
 
 defineOptions({
-  name: 'CycleTimeSelector',
+  name: 'RecurTimeSelector',
 })
 </script>
 
 <template>
-  <div class="cycle-time-selector flex flex-wrap">
+  <div class="recur-time-selector flex flex-wrap">
     <div
       v-for="(item, index) in dynamicWeekDayArray"
       :key="index"
@@ -120,6 +135,7 @@ defineOptions({
           v-else
           :id="`toggle-${index}`"
           v-model:value="item.isToggle"
+          :disabled="closeAllSelector"
           class="w-20"
           switch-on-color="#3A7DC9"
         />
@@ -129,7 +145,7 @@ defineOptions({
         <select
           :id="`start-${index}`"
           v-model="item.selectedStartTime"
-          :disabled="!item.isToggle"
+          :disabled="!item.isToggle || closeAllSelector"
           :class="[props.selectClass, item.selectedStartTime.length === 0 ? 'border-red-500' : '']"
         >
           <option
@@ -148,7 +164,7 @@ defineOptions({
         <select
           :id="`end-${index}`"
           v-model="item.selectedEndTime"
-          :disabled="!item.isToggle"
+          :disabled="!item.isToggle || closeAllSelector"
           :class="[props.selectClass, item.selectedEndTime.length === 0 ? 'border-red-500' : '']"
         >
           <option
