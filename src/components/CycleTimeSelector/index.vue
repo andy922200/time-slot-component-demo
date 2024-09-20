@@ -109,22 +109,28 @@ defineOptions({
     <div
       v-for="(item, index) in dynamicWeekDayArray"
       :key="index"
-      class="my-2 flex w-full flex-wrap items-center justify-center"
+      class="my-4 flex w-full flex-wrap items-center px-4 lg:my-2 lg:justify-center lg:px-0"
     >
-      <div class="label__wrapper mr-2">
+      <div class="label__wrapper mb-2 mr-2 w-full lg:mb-0 lg:w-auto">
         <label :for="`toggle-${index}`" class="mx-2">{{ item.text }}</label>
         <span v-if="item.isDisableDay" class="inline-block w-20 text-center">
           <slot name="disable-day-text">無適用時段</slot>
         </span>
-        <BaseSwitch v-else :id="`toggle-${index}`" v-model:value="item.isToggle" class="w-20" />
+        <BaseSwitch
+          v-else
+          :id="`toggle-${index}`"
+          v-model:value="item.isToggle"
+          class="w-20"
+          switch-on-color="#3A7DC9"
+        />
       </div>
 
-      <div class="start-options__wrapper mx-2" :class="{ invisible: !item.isToggle }">
+      <div class="start-options__wrapper w-1/2 px-2 lg:w-auto" :class="{ hidden: !item.isToggle }">
         <select
           :id="`start-${index}`"
           v-model="item.selectedStartTime"
           :disabled="!item.isToggle"
-          :class="[props.selectClass]"
+          :class="[props.selectClass, item.selectedStartTime.length === 0 ? 'border-red-500' : '']"
         >
           <option
             v-for="(option, optionIndex) in item.startTimeOptions"
@@ -138,12 +144,12 @@ defineOptions({
         </select>
       </div>
 
-      <div class="end-options__wrapper ml-2" :class="{ invisible: !item.isToggle }">
+      <div class="end-options__wrapper w-1/2 pl-2 lg:w-auto" :class="{ hidden: !item.isToggle }">
         <select
           :id="`end-${index}`"
           v-model="item.selectedEndTime"
           :disabled="!item.isToggle"
-          :class="[props.selectClass]"
+          :class="[props.selectClass, item.selectedEndTime.length === 0 ? 'border-red-500' : '']"
         >
           <option
             v-for="(option, optionIndex) in item.endTimeOptions"
