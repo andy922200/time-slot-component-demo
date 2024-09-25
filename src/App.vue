@@ -59,6 +59,7 @@ const selectedLanguageModel = computed({
       <router-link :to="{ name: 'recur-time-selector' }" class="m-2">
         RecurTimeSelector 週期預約時間選擇器
       </router-link>
+      <router-link :to="{ name: 'swiper' }" class="m-2"> Swiper 圖片輪播 </router-link>
     </div>
   </div>
 

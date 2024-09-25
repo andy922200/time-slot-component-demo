@@ -96,6 +96,11 @@ const routes = [
     name: 'recur-time-selector',
     component: () => import('../views/RecurTimeSelector.vue'),
   },
+  {
+    path: '/swiper',
+    name: 'swiper',
+    component: () => import('../views/Swiper.vue'),
+  },
 ]
 
 const baseURL = process.env.NODE_ENV === 'production' ? '/component-library-demo/' : ''
