@@ -12,6 +12,7 @@ interface RecurTimeOption {
 interface ConflictItem {
   conflictDate: string
   usedSlot: TimeSlotFromAPI[]
+  conflictSlot: TimeSlotFromAPI[]
   isValid: boolean
   selectedStartTime: string
   selectedEndTime: string
@@ -75,65 +76,42 @@ const checkConflicts = async ({
           `${dateFormatStr} HH:mm`,
         ).isBefore(dayjs())
       ) {
-        alert('開始時間有包含過去的時間段')
         allInPast = true
         break
       }
 
-      const conflictIndex = conflictList.findIndex(
-        (conflict) =>
-          conflict.conflictDate === date.format(dateFormatStr) &&
-          conflict.weekday === selectedRecurTimeItem.weekday,
-      )
+      // 先行建立一筆可能的衝突記錄物件
+      const newConflict: ConflictItem = {
+        ...selectedRecurTimeItem,
+        conflictDate: date.format(dateFormatStr),
+        usedSlot: usedSlotsForDay,
+        conflictSlot: [],
+        startOptions: [],
+        endOptions: [],
+        endOptionsRaw: {},
+        finalSelectedStartTime: '',
+        finalSelectedEndTime: '',
+      }
 
-      if (conflictIndex !== -1) {
-        // 如果已經存在該日期的衝突記錄，將新的衝突 usedSlot 添加到已存在的記錄中
-        usedSlotsForDay.forEach((usedSlot) => {
-          if (
-            isInTimeSlotStrict({
-              startTime: selectedRecurTimeItem.selectedStartTime,
-              endTime: selectedRecurTimeItem.selectedEndTime,
-              date: date.format(dateFormatStr),
-              slotStart: usedSlot.startTime,
-              slotEnd: usedSlot.endTime,
-              slotDate: usedSlot.date,
-            })
-          ) {
-            conflictList[conflictIndex].usedSlot.push(usedSlot)
-          }
-        })
-      } else {
-        // 如果該日期的衝突記錄尚不存在，創建新的記錄
-        const newConflict: ConflictItem = {
-          ...selectedRecurTimeItem,
-          conflictDate: date.format(dateFormatStr),
-          usedSlot: [],
-          startOptions: [],
-          endOptions: [],
-          endOptionsRaw: {},
-          finalSelectedStartTime: '',
-          finalSelectedEndTime: '',
+      // 檢查已選取的時間段是否與已預約的時間段有衝突
+      usedSlotsForDay.forEach((usedSlot) => {
+        if (
+          isInTimeSlotStrict({
+            startTime: selectedRecurTimeItem.selectedStartTime,
+            endTime: selectedRecurTimeItem.selectedEndTime,
+            date: date.format(dateFormatStr),
+            slotStart: usedSlot.startTime,
+            slotEnd: usedSlot.endTime,
+            slotDate: usedSlot.date,
+          })
+        ) {
+          newConflict.conflictSlot.push(usedSlot)
         }
+      })
 
-        usedSlotsForDay.forEach((usedSlot) => {
-          if (
-            isInTimeSlotStrict({
-              startTime: selectedRecurTimeItem.selectedStartTime,
-              endTime: selectedRecurTimeItem.selectedEndTime,
-              date: date.format(dateFormatStr),
-              slotStart: usedSlot.startTime,
-              slotEnd: usedSlot.endTime,
-              slotDate: usedSlot.date,
-            })
-          ) {
-            newConflict.usedSlot.push(usedSlot)
-          }
-        })
-
-        // 如果有衝突才將新記錄添加到衝突列表中
-        if (newConflict.usedSlot.length > 0) {
-          conflictList.push(newConflict)
-        }
+      // 如果有衝突才將新記錄添加到衝突列表中
+      if (newConflict.conflictSlot.length > 0) {
+        conflictList.push(newConflict)
       }
     }
   }

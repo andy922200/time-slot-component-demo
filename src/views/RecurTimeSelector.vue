@@ -34,8 +34,8 @@ const fetchUsedTimeSlots = async () => {
   ]
 }
 
-const selectedStartDate = ref('')
-const selectedEndDate = ref('')
+const selectedStartDate = ref(todayDayjs.format(dateFormatStr))
+const selectedEndDate = ref(todayDayjs.format(dateFormatStr))
 const selectedRecurTimeResult = ref<RecurTimeSelectorEmitItem[]>([])
 const isValidRecurTimeResult = computed(() => {
   return selectedRecurTimeResult.value.every((item) => item.isValid)
