@@ -85,3 +85,30 @@ export const checkWeekdaysInRange = ({
 
   return { include, exclude }
 }
+
+export const generateRandomTimeRange = (existingRanges: { start: string; end: string }[]) => {
+  let startHour, startMinute, endHour, endMinute, start, end
+
+  const formatTime = (hour: number, minute: number) => {
+    return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`
+  }
+
+  const isOverlapping = (newStart: string, newEnd: string) => {
+    return existingRanges.some(({ start, end }) => newStart < end && newEnd > start)
+  }
+
+  do {
+    startHour = Math.floor(Math.random() * 23) // 小時最大值為 23
+    startMinute = Math.floor(Math.random() * 60)
+    endHour = startHour + Math.floor(Math.random() * (23 - startHour)) // 確保 endHour >= startHour
+    endMinute = Math.floor(Math.random() * 60)
+
+    start = formatTime(startHour, startMinute)
+    end =
+      endHour === startHour && endMinute <= startMinute
+        ? formatTime(startHour, startMinute + 1) // 確保 end > start
+        : formatTime(endHour, endMinute)
+  } while (isOverlapping(start, end))
+
+  return { start, end }
+}

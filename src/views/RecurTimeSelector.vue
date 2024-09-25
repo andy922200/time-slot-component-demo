@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import { Dayjs } from 'dayjs'
 import { computed, onMounted, ref, watch } from 'vue'
 
 import RecurTimeSelector from '@/components/RecurTimeSelector/index.vue'
 import { RecurTimeSelectorEmitItem } from '@/components/RecurTimeSelector/type'
 import { checkConflicts, ConflictItem, generateStartAndEndOptions } from '@/helpers/time-recur'
 import { TimeSlotFromAPI } from '@/helpers/time-selector'
-import { checkWeekdaysInRange } from '@/helpers/utils'
+import { checkWeekdaysInRange, generateRandomTimeRange } from '@/helpers/utils'
 import dayjs from '@/plugins/dayjs'
 
 const dateFormatStr = 'YYYY-MM-DD'
@@ -22,16 +23,47 @@ const errorMsg = ref('')
 const usedTimeSlots = ref<TimeSlotFromAPI[]>([])
 const fetchUsedTimeSlots = async () => {
   await new Promise((r) => setTimeout(r, 500))
-  return [
-    { startTime: '21:08', endTime: '22:30', date: yesterdayDayjs.format(dateFormatStr) },
-    { startTime: '08:01', endTime: '08:31', date: todayDayjs.format(dateFormatStr) },
-    { startTime: '23:00', endTime: '23:28', date: todayDayjs.format(dateFormatStr) },
-    { startTime: '00:00', endTime: '00:50', date: tomorrowDayjs.format(dateFormatStr) },
-    { startTime: '20:30', endTime: '00:00', date: tomorrowDayjs.format(dateFormatStr) },
-    { startTime: '09:31', endTime: '13:00', date: afterOneMonthDayjs.format(dateFormatStr) },
-    { startTime: '22:30', endTime: '22:59', date: afterOneMonthDayjs.format(dateFormatStr) },
-    { startTime: '23:31', endTime: '00:00', date: afterOneMonthDayjs.format(dateFormatStr) },
-  ]
+
+  const result = []
+
+  const addTimeRange = (dayjsDate: Dayjs) => {
+    const existingRanges = result.filter(
+      (record) => record.date === dayjsDate.format(dateFormatStr),
+    )
+    const { start, end } = generateRandomTimeRange(existingRanges)
+    result.push({
+      date: dayjsDate.format(dateFormatStr),
+      start,
+      end,
+      type: 'used',
+    })
+  }
+
+  addTimeRange(yesterdayDayjs)
+
+  for (let i = 0; i < 2; i++) {
+    addTimeRange(todayDayjs)
+  }
+  for (let i = 0; i < 2; i++) {
+    addTimeRange(tomorrowDayjs)
+  }
+  for (let i = 0; i < 3; i++) {
+    addTimeRange(afterOneMonthDayjs)
+  }
+
+  return result
+    .map((i) => ({ startTime: i.start, endTime: i.end, date: i.date }))
+    .sort((a, b) => {
+      const dateA = a.date
+      const dateB = b.date
+
+      if (dateA !== dateB) {
+        return dateA.localeCompare(dateB) // 比較日期
+      }
+
+      // 若日期相同，則比較 start 時間
+      return a.startTime.localeCompare(b.startTime)
+    })
 }
 
 const selectedStartDate = ref(todayDayjs.format(dateFormatStr))
